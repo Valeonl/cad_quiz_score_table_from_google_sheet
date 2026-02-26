@@ -1,0 +1,778 @@
+/* ========================================
+   Квиз ЦАД — Яркие стили
+   ======================================== */
+
+/* Импорт шрифтов */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* Переменные */
+:root {
+    --primary-blue: #1e88e5;
+    --primary-red: #e53935;
+    --primary-gold: #ffb300;
+    --primary-purple: #8e24aa;
+    --primary-green: #43a047;
+    --gradient-23feb: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%);
+    --gradient-8mar: linear-gradient(135deg, #ec407a 0%, #d81b60 100%);
+    --gradient-gold: linear-gradient(135deg, #ffb300 0%, #ff6f00 100%);
+    --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    --bg-light: #f8f9fa;
+    --text-dark: #2c3e50;
+    --text-light: #ffffff;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 30px;
+}
+
+/* ========================================
+   Базовые стили
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Праздничный фон */
+.festive-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    z-index: -1;
+}
+
+/* ========================================
+   Шапка
+   ======================================== */
+.quiz-header {
+    background: white;
+    box-shadow: var(--shadow-lg);
+    padding: 1.5rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 4px solid var(--primary-gold);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-icon {
+    font-size: 3rem;
+    color: var(--primary-gold);
+    animation: trophyShine 2s ease-in-out infinite;
+}
+
+@keyframes trophyShine {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 5px rgba(255, 179, 0, 0.5));
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px rgba(255, 179, 0, 0.8));
+    }
+}
+
+.logo-section h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.event-info {
+    text-align: right;
+}
+
+.event-location,
+.event-date {
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin: 0.25rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.event-location i,
+.event-date i {
+    color: var(--primary-blue);
+}
+
+/* Праздничные бейджи */
+.holiday-badges {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--radius-xl);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.badge:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.badge-23feb {
+    background: var(--gradient-23feb);
+    color: white;
+}
+
+.badge-8mar {
+    background: var(--gradient-8mar);
+    color: white;
+}
+
+.badge i {
+    font-size: 1.1rem;
+}
+
+/* ========================================
+   Панель управления
+   ======================================== */
+.control-panel {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.status-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#lastUpdate {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+#lastUpdate i {
+    color: var(--primary-blue);
+    margin-right: 0.5rem;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffc107;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status-dot.connected {
+    background: var(--primary-green);
+}
+
+.status-dot.error {
+    background: var(--primary-red);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+}
+
+.control-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.btn-refresh {
+    background: var(--gradient-gold);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-refresh:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-refresh:active {
+    transform: translateY(0);
+}
+
+.btn-refresh i {
+    transition: transform 0.5s ease;
+}
+
+.btn-refresh.spinning i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.auto-refresh-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+/* Переключатель */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 26px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background: var(--gradient-gold);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+/* ========================================
+   Основной контент
+   ======================================== */
+main {
+    padding-bottom: 3rem;
+}
+
+section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #000000;
+    text-shadow: none;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-title i {
+    color: var(--primary-gold);
+    font-size: 2rem;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+}
+
+/* ========================================
+   Таблица лидеров
+   ======================================== */
+.leaders-section {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.leaders-table-container {
+    overflow-x: auto;
+}
+
+.leaders-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.leaders-table thead tr {
+    background: var(--gradient-gold);
+}
+
+.leaders-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.leaders-table th:first-child {
+    border-radius: var(--radius-md) 0 0 0;
+}
+
+.leaders-table th:last-child {
+    border-radius: 0 var(--radius-md) 0 0;
+}
+
+.leaders-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #eee;
+}
+
+.leaders-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(255, 179, 0, 0.1) 0%, rgba(255, 111, 0, 0.1) 100%);
+    transform: scale(1.01);
+}
+
+.leaders-table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.rank-col {
+    width: 60px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.rank-1 {
+    color: #ffb300;
+    font-size: 1.5rem;
+}
+
+.rank-2 {
+    color: #c0c0c0;
+    font-size: 1.4rem;
+}
+
+.rank-3 {
+    color: #cd7f32;
+    font-size: 1.3rem;
+}
+
+.team-col {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.score-col {
+    font-weight: 700;
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+}
+
+/* ========================================
+   Вкладки раундов
+   ======================================== */
+.round-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.round-tab {
+    background: white;
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-xl);
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.round-tab:hover {
+    background: rgba(30, 136, 229, 0.1);
+    transform: translateY(-2px);
+}
+
+.round-tab.active {
+    background: var(--gradient-23feb);
+    color: white;
+    border-color: transparent;
+    box-shadow: var(--shadow-md);
+}
+
+.round-tab[data-round="7"] {
+    border-color: var(--primary-gold);
+    color: var(--primary-gold);
+}
+
+.round-tab[data-round="7"].active {
+    background: var(--gradient-gold);
+    color: white;
+}
+
+/* ========================================
+   Таблица результатов
+   ======================================== */
+.results-table-container {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.results-table thead {
+    background: var(--gradient-23feb);
+}
+
+.results-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.results-table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.results-table tbody tr:hover {
+    background: rgba(30, 136, 229, 0.05);
+}
+
+.results-table tbody tr.vabank-row {
+    background: linear-gradient(135deg, rgba(255, 179, 0, 0.15) 0%, rgba(255, 111, 0, 0.15) 100%);
+    border-left: 4px solid var(--primary-gold);
+}
+
+.results-table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.results-table .score-col {
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+.results-table .bet-col {
+    color: var(--primary-red);
+    font-weight: 600;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ========================================
+   Визуализация
+   ======================================== */
+.visualization-section {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.chart-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.chart-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-dark);
+}
+
+.chart-card h3 i {
+    color: var(--primary-blue);
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 300px;
+}
+
+/* ========================================
+   Подвал
+   ======================================== */
+.quiz-footer {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.quiz-footer p {
+    margin: 0.5rem 0;
+}
+
+.quiz-footer i {
+    color: var(--primary-red);
+    margin: 0 0.5rem;
+}
+
+.footer-note {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* ========================================
+   Адаптивность
+   ======================================== */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logo-section {
+        flex-direction: column;
+    }
+
+    .logo-section h1 {
+        font-size: 2rem;
+    }
+
+    .event-info {
+        text-align: center;
+    }
+
+    .event-location,
+    .event-date {
+        justify-content: center;
+    }
+
+    .holiday-badges {
+        justify-content: center;
+    }
+
+    .control-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .status-info {
+        text-align: center;
+    }
+
+    .control-buttons {
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+    }
+
+    .leaders-table th,
+    .leaders-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .round-tabs {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .round-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+
+    .charts-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-section h1 {
+        font-size: 1.5rem;
+    }
+
+    .logo-icon {
+        font-size: 2rem;
+    }
+
+    .badge {
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .btn-refresh span {
+        display: none;
+    }
+
+    .btn-refresh {
+        padding: 0.75rem 1rem;
+    }
+
+    .auto-refresh-toggle span {
+        display: none;
+    }
+
+    .leaders-table .team-col,
+    .results-table .team-col {
+        font-size: 0.85rem;
+    }
+
+    .results-table .question-col {
+        display: none;
+    }
+}
+
+/* ========================================
+   Анимации загрузки
+   ======================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.leaders-section,
+.rounds-section,
+.visualization-section {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Индикатор загрузки */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--primary-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}

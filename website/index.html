@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <!-- Стили -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="files/bootstrap.min.css">
+
+    <link rel="stylesheet" href="styles/main.css">
+
+    <title>Квиз ЦАД — Черняховского, 17</title>
+</head>
+
+<body>
+    <!-- Праздничный фон с градиентами -->
+    <div class="festive-bg"></div>
+
+    <!-- Шапка -->
+    <header class="quiz-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-trophy logo-icon"></i>
+                    <h1>Квиз ЦАД</h1>
+                </div>
+                <div class="event-info">
+                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> Черняховского, 17</p>
+                    <p class="event-date"><i class="fas fa-calendar-alt"></i> 27 февраля 2026</p>
+                </div>
+            </div>
+            <div class="holiday-badges">
+                <span class="badge badge-23feb"><i class="fas fa-shield-alt"></i> 23 Февраля</span>
+                <span class="badge badge-8mar"><i class="fas fa-female"></i> 8 Марта</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Панель управления -->
+    <div class="container">
+        <div class="control-panel">
+            <div class="status-info">
+                <span id="lastUpdate"><i class="fas fa-clock"></i> Последнее обновление: --:--:--</span>
+                <span id="connectionStatus" class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Ожидание...</span>
+                </span>
+            </div>
+            <div class="control-buttons">
+                <button id="refreshBtn" class="btn-refresh">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Обновить</span>
+                </button>
+                <div class="auto-refresh-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="autoRefresh" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span>Автообновление (5 сек)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основная таблица лидеров -->
+    <main class="container">
+        <section class="leaders-section">
+            <h2 class="section-title">
+                <i class="fas fa-crown"></i>
+                Таблица лидеров
+            </h2>
+            <div class="leaders-table-container">
+                <table id="leadersTable" class="leaders-table">
+                    <thead>
+                        <tr>
+                            <th class="rank-col">#</th>
+                            <th class="team-col">Команда</th>
+                            <th class="score-col">Общий счёт</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Данные загружаются динамически -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Детализация по раундам -->
+        <section class="rounds-section">
+            <h2 class="section-title">
+                <i class="fas fa-list-ol"></i>
+                Результаты по раундам
+            </h2>
+
+            <!-- Навигация по раундам -->
+            <div class="round-tabs">
+                <button class="round-tab active" data-round="all">Все раунды</button>
+                <button class="round-tab" data-round="1">Раунд 1</button>
+                <button class="round-tab" data-round="2">Раунд 2</button>
+                <button class="round-tab" data-round="3">Раунд 3</button>
+                <button class="round-tab" data-round="4">Раунд 4</button>
+                <button class="round-tab" data-round="5">Раунд 5</button>
+                <button class="round-tab" data-round="6">Раунд 6</button>
+                <button class="round-tab" data-round="7" data-special="vabank">
+                    <i class="fas fa-star"></i> Раунд 7 «Вабанк»
+                </button>
+            </div>
+
+            <!-- Таблица результатов -->
+            <div class="results-table-container">
+                <table id="resultsTable" class="results-table">
+                    <thead>
+                        <tr class="header-row">
+                            <th class="team-col">Команда</th>
+                            <th class="round-col">Раунд</th>
+                            <th class="question-col">Вопрос</th>
+                            <th class="score-col">Баллы</th>
+                            <th class="bet-col hidden">Ставка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Данные загружаются динамически -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Визуализация -->
+        <section class="visualization-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-bar"></i>
+                Визуализация результатов
+            </h2>
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-line"></i> Прогресс по раундам</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-pie"></i> Распределение баллов</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="quiz-footer">
+        <div class="container">
+            <p>
+                <i class="fas fa-heart"></i>
+                Квиз для ЦАД (Черняховского, 17) — к 23 Февраля и 8 Марта
+            </p>
+            <p class="footer-note">Данные обновляются в реальном времени из Google Sheets</p>
+        </div>
+    </footer>
+
+    <!-- Скрипты -->
+    <script src="files/jquery.min.js"></script>
+    <script src="files/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+
+</html>
