@@ -494,16 +494,6 @@ section {
     box-shadow: var(--shadow-md);
 }
 
-.round-tab[data-round="7"] {
-    border-color: var(--primary-gold);
-    color: var(--primary-gold);
-}
-
-.round-tab[data-round="7"].active {
-    background: var(--gradient-gold);
-    color: white;
-}
-
 /* ========================================
    Таблица результатов
    ======================================== */
@@ -545,11 +535,6 @@ section {
     background: rgba(30, 136, 229, 0.05);
 }
 
-.results-table tbody tr.vabank-row {
-    background: linear-gradient(135deg, rgba(255, 179, 0, 0.15) 0%, rgba(255, 111, 0, 0.15) 100%);
-    border-left: 4px solid var(--primary-gold);
-}
-
 .results-table td {
     padding: 1rem;
     vertical-align: middle;
@@ -558,11 +543,6 @@ section {
 .results-table .score-col {
     font-weight: 700;
     color: var(--primary-green);
-}
-
-.results-table .bet-col {
-    color: var(--primary-red);
-    font-weight: 600;
 }
 
 .hidden {
@@ -738,8 +718,28 @@ section {
     /* Показываем столбец вопроса на мобильных */
     .results-table .question-col {
         display: table-cell !important;
-        min-width: 70px;
-        max-width: 90px;
+        min-width: 50px;
+        max-width: 70px;
+        text-align: center;
+    }
+    
+    /* Кликабельный вопрос на мобильном */
+    .results-table .question-col.clickable {
+        cursor: pointer;
+        color: var(--primary-blue);
+        font-weight: 600;
+        position: relative;
+    }
+    
+    .results-table .question-col.clickable:hover {
+        background: rgba(30, 136, 229, 0.1);
+    }
+    
+    .results-table .question-col.clickable::after {
+        content: ' \25BC';
+        font-size: 0.6em;
+        vertical-align: middle;
+        margin-left: 2px;
     }
 }
 
@@ -834,4 +834,51 @@ section {
     border-top: 5px solid var(--primary-gold);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+}
+
+/* ========================================
+   Модальное окно
+   ======================================== */
+#questionModal .modal-content {
+    border-radius: var(--radius-lg);
+    border: none;
+    box-shadow: var(--shadow-lg);
+}
+
+#questionModal .modal-header {
+    background: var(--gradient-23feb);
+    color: white;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border: none;
+}
+
+#questionModal .modal-title {
+    font-weight: 600;
+}
+
+#questionModal .modal-title i {
+    margin-right: 0.5rem;
+    color: var(--primary-gold);
+}
+
+#questionModal .modal-body {
+    padding: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#questionModal .modal-footer {
+    border-top: 1px solid #eee;
+    padding: 1rem 1.5rem;
+}
+
+#questionModal .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+@media (max-width: 480px) {
+    #questionModal .modal-body {
+        padding: 1.5rem;
+        font-size: 1rem;
+    }
 }

@@ -104,9 +104,6 @@
                 <button class="round-tab" data-round="4">Раунд 4</button>
                 <button class="round-tab" data-round="5">Раунд 5</button>
                 <button class="round-tab" data-round="6">Раунд 6</button>
-                <button class="round-tab" data-round="7" data-special="vabank">
-                    <i class="fas fa-star"></i> Раунд 7 «Вабанк»
-                </button>
             </div>
 
             <!-- Таблица результатов -->
@@ -118,7 +115,6 @@
                             <th class="round-col">Раунд</th>
                             <th class="question-col">Вопрос</th>
                             <th class="score-col">Баллы</th>
-                            <th class="bet-col hidden">Ставка</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,6 +146,27 @@
             </div>
         </section>
     </main>
+
+    <!-- Модальное окно вопроса -->
+    <div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="questionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="questionModalLabel">
+                        <i class="fas fa-question-circle"></i>
+                        Вопрос <span id="modalQuestionNum"></span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalQuestionText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Подвал -->
     <footer class="quiz-footer">

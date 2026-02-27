@@ -11,7 +11,7 @@ const CONFIG = {
     teamsRange: 'команды!A1:A100', // Лист с командами
     apiKey: 'AIzaSyB8eMVab-8cvE997P-gbWlArrWmw4QjtwE',
     autoRefreshInterval: 5000, // 5 секунд
-    totalRounds: 7 // Всего раундов
+    totalRounds: 6 // Всего раундов
 };
 
 // Глобальное состояние
@@ -70,6 +70,19 @@ function initEventListeners() {
         resizeTimer = setTimeout(function() {
             updateResultsTable();
         }, 250);
+    });
+
+    // Обработчик клика на вопрос (мобильная версия)
+    $(document).on('click', '.question-col.clickable', function() {
+        const questionText = $(this).data('question');
+        const questionNum = $(this).data('num');
+        const round = $(this).data('round');
+
+        if (questionText && questionText !== '') {
+            $('#modalQuestionNum').text(`${round}-${questionNum}`);
+            $('#modalQuestionText').text(questionText);
+            $('#questionModal').modal('show');
+        }
     });
 }
 
@@ -224,7 +237,7 @@ function parseQuestionsData(rows) {
 // ========================================
 function parseQuizData(rows) {
     // Структура столбцов:
-    // A: Команда, B: Номер раунда, C: Название раунда, D: Номер вопроса в раунде, E: Текст вопроса, F: Полученные баллы, G: Ставка для 7 раунда
+    // A: Команда, B: Номер раунда, C: Название раунда, D: Номер вопроса в раунде, E: Текст вопроса, F: Полученные баллы
     const data = [];
     for (let i = 1; i < rows.length; i++) {
         const row = rows[i];
@@ -236,7 +249,6 @@ function parseQuizData(rows) {
         const questionNum = parseInt(row[3]) || 0;    // Номер вопроса в раунде
         const question = row[4] || '';                // Текст вопроса
         const score = parseFloat(row[5]) || 0;        // Полученные баллы (столбец F, индекс 5)
-        const bet = (round === 7) ? (row[6] || '') : null;  // Ставка для 7 раунда (столбец G, индекс 6)
 
         data.push({
             team,
@@ -244,8 +256,7 @@ function parseQuizData(rows) {
             roundName,
             questionNum,
             question,
-            score,
-            bet
+            score
         });
     }
 
@@ -311,11 +322,6 @@ function updateResultsTable() {
         filteredData = quizData.filter(row => row.round === parseInt(currentRound));
     }
 
-    // Показываем/скрываем столбец ставки для раунда 7
-    const $betCol = $('#resultsTable .bet-col, #resultsTable th:nth-child(5)');
-    const isVabank = currentRound === '7';
-    $betCol.toggleClass('hidden', !isVabank);
-
     // Если это конкретный раунд, показываем все команды с результатами или "нет данных"
     if (currentRound !== 'all') {
         const roundNum = parseInt(currentRound);
@@ -327,40 +333,39 @@ function updateResultsTable() {
             
             if (teamData.length === 0) {
                 // Нет данных для этой команды в этом раунде
-                const questionText = isMobile ? 'Вопрос -' : '<em>Нет данных</em>';
+                const questionText = isMobile ? '-' : '<em>Нет данных</em>';
                 const $tr = $(`
                     <tr>
                         <td class="team-col">${escapeHtml(team)}</td>
-                        <td>${roundNum}${roundNum === 7 ? ' ★' : ''}</td>
-                        <td class="question-col">${questionText}</td>
+                        <td>${roundNum}</td>
+                        <td class="question-col ${isMobile ? 'clickable' : ''}" ${isMobile ? 'data-question="" data-round="'+roundNum+'" data-num="-"' : ''}>${questionText}</td>
                         <td class="score-col">0</td>
-                        <td class="bet-col ${roundNum === 7 ? '' : 'hidden'}">-</td>
                     </tr>
                 `);
                 $tbody.append($tr);
             } else {
                 // Есть данные
                 teamData.forEach((row, index) => {
-                    const isVabankRow = row.round === 7;
-                    const betDisplay = isVabankRow && row.bet !== null && row.bet !== '' ? row.bet : '-';
                     const scoreDisplay = row.score > 0 ? '+' + row.score : row.score;
                     
                     // На мобильном показываем только номер вопроса
                     let questionText;
                     if (isMobile) {
-                        questionText = `Вопрос ${row.questionNum}`;
+                        questionText = `${row.questionNum}`;
                     } else {
                         const questionKey = `${row.round}-${row.questionNum}`;
                         questionText = questionsData[questionKey] || row.question || `Вопрос ${row.questionNum}`;
                     }
                     
+                    const questionKey = `${row.round}-${row.questionNum}`;
+                    const fullQuestion = questionsData[questionKey] || row.question || `Вопрос ${row.questionNum}`;
+                    
                     const $tr = $(`
-                        <tr class="${isVabankRow ? 'vabank-row' : ''}">
+                        <tr>
                             <td class="team-col">${escapeHtml(row.team)}</td>
-                            <td>${row.round}${row.round === 7 ? ' ★' : ''}</td>
-                            <td class="question-col">${escapeHtml(questionText)}</td>
+                            <td>${row.round}</td>
+                            <td class="question-col ${isMobile ? 'clickable' : ''}" ${isMobile ? 'data-question="'+escapeHtml(fullQuestion)+'" data-round="'+row.round+'" data-num="'+row.questionNum+'"' : ''}>${escapeHtml(questionText)}</td>
                             <td class="score-col">${scoreDisplay}</td>
-                            <td class="bet-col ${isVabankRow ? '' : 'hidden'}">${betDisplay}</td>
                         </tr>
                     `);
                     $tbody.append($tr);
@@ -374,7 +379,7 @@ function updateResultsTable() {
     if (filteredData.length === 0) {
         $tbody.append(`
             <tr>
-                <td colspan="${isVabank ? 5 : 4}" class="text-center">Нет данных для отображения</td>
+                <td colspan="4" class="text-center">Нет данных для отображения</td>
             </tr>
         `);
         return;
@@ -383,26 +388,26 @@ function updateResultsTable() {
     const isMobile = $(window).width() <= 768;
 
     filteredData.forEach((row, index) => {
-        const isVabankRow = row.round === 7;
-        const betDisplay = isVabankRow && row.bet !== null && row.bet !== '' ? row.bet : '-';
         const scoreDisplay = row.score > 0 ? '+' + row.score : row.score;
         
         // На мобильном показываем только номер вопроса
         let questionText;
         if (isMobile) {
-            questionText = `Вопрос ${row.questionNum}`;
+            questionText = `${row.questionNum}`;
         } else {
             const questionKey = `${row.round}-${row.questionNum}`;
             questionText = questionsData[questionKey] || row.question || `Вопрос ${row.questionNum}`;
         }
         
+        const questionKey = `${row.round}-${row.questionNum}`;
+        const fullQuestion = questionsData[questionKey] || row.question || `Вопрос ${row.questionNum}`;
+        
         const $tr = $(`
-            <tr class="${isVabankRow ? 'vabank-row' : ''}">
+            <tr>
                 <td class="team-col">${escapeHtml(row.team)}</td>
-                <td>${row.round}${row.round === 7 ? ' ★' : ''}</td>
-                <td class="question-col">${escapeHtml(questionText)}</td>
+                <td>${row.round}</td>
+                <td class="question-col ${isMobile ? 'clickable' : ''}" ${isMobile ? 'data-question="'+escapeHtml(fullQuestion)+'" data-round="'+row.round+'" data-num="'+row.questionNum+'"' : ''}>${escapeHtml(questionText)}</td>
                 <td class="score-col">${scoreDisplay}</td>
-                <td class="bet-col ${isVabankRow ? '' : 'hidden'}">${betDisplay}</td>
             </tr>
         `);
 
@@ -439,25 +444,23 @@ function updateProgressChart() {
 
     // Используем команды из списка
     const teams = teamsList.length > 0 ? teamsList : [...new Set(quizData.map(row => row.team))];
-    const rounds = [1, 2, 3, 4, 5, 6, 7];
+    const rounds = [1, 2, 3, 4, 5, 6];
 
     const datasets = teams.map((team, index) => {
         const teamData = quizData.filter(row => row.team === team);
         const cumulativeScores = [];
         let cumulative = 0;
-        let lastValidRound = -1;
 
         rounds.forEach(round => {
             const roundRows = teamData.filter(row => row.round === round);
             const roundScore = roundRows.reduce((sum, row) => sum + row.score, 0);
             
-            // Проверяем, сыгран ли этот раунд (есть ли данные с ненулевыми баллами или есть запись)
+            // Проверяем, сыгран ли этот раунд (есть ли данные)
             const hasData = roundRows.length > 0;
             
             if (hasData) {
                 cumulative += roundScore;
                 cumulativeScores.push(cumulative);
-                lastValidRound = round - 1; // индекс последнего раунда с данными
             } else {
                 // Нет данных - ставим null, чтобы линия прерывалась
                 cumulativeScores.push(null);
