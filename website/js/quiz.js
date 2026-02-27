@@ -31,6 +31,11 @@ $(document).ready(function() {
     initEventListeners();
     startAutoRefresh();
     loadAllData();
+    
+    // Принудительное обновление таблицы для правильного определения мобильной версии
+    setTimeout(function() {
+        updateResultsTable();
+    }, 100);
 });
 
 // ========================================
@@ -56,6 +61,15 @@ function initEventListeners() {
     $('.round-tab').on('click', function() {
         const round = $(this).data('round');
         switchRound(round);
+    });
+
+    // Обновление таблицы при изменении размера окна
+    let resizeTimer;
+    $(window).on('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            updateResultsTable();
+        }, 250);
     });
 }
 
@@ -305,6 +319,7 @@ function updateResultsTable() {
     // Если это конкретный раунд, показываем все команды с результатами или "нет данных"
     if (currentRound !== 'all') {
         const roundNum = parseInt(currentRound);
+        const isMobile = $(window).width() <= 768;
         
         // Для каждого раунда показываем все команды
         teamsList.forEach(team => {
@@ -312,11 +327,12 @@ function updateResultsTable() {
             
             if (teamData.length === 0) {
                 // Нет данных для этой команды в этом раунде
+                const questionText = isMobile ? 'Вопрос -' : '<em>Нет данных</em>';
                 const $tr = $(`
                     <tr>
                         <td class="team-col">${escapeHtml(team)}</td>
                         <td>${roundNum}${roundNum === 7 ? ' ★' : ''}</td>
-                        <td class="question-col"><em>Нет данных</em></td>
+                        <td class="question-col">${questionText}</td>
                         <td class="score-col">0</td>
                         <td class="bet-col ${roundNum === 7 ? '' : 'hidden'}">-</td>
                     </tr>
@@ -329,8 +345,14 @@ function updateResultsTable() {
                     const betDisplay = isVabankRow && row.bet !== null && row.bet !== '' ? row.bet : '-';
                     const scoreDisplay = row.score > 0 ? '+' + row.score : row.score;
                     
-                    const questionKey = `${row.round}-${row.questionNum}`;
-                    const questionText = questionsData[questionKey] || row.question || `Вопрос ${row.questionNum}`;
+                    // На мобильном показываем только номер вопроса
+                    let questionText;
+                    if (isMobile) {
+                        questionText = `Вопрос ${row.questionNum}`;
+                    } else {
+                        const questionKey = `${row.round}-${row.questionNum}`;
+                        questionText = questionsData[questionKey] || row.question || `Вопрос ${row.questionNum}`;
+                    }
                     
                     const $tr = $(`
                         <tr class="${isVabankRow ? 'vabank-row' : ''}">
@@ -358,13 +380,21 @@ function updateResultsTable() {
         return;
     }
 
+    const isMobile = $(window).width() <= 768;
+
     filteredData.forEach((row, index) => {
         const isVabankRow = row.round === 7;
         const betDisplay = isVabankRow && row.bet !== null && row.bet !== '' ? row.bet : '-';
         const scoreDisplay = row.score > 0 ? '+' + row.score : row.score;
         
-        const questionKey = `${row.round}-${row.questionNum}`;
-        const questionText = questionsData[questionKey] || row.question || `Вопрос ${row.questionNum}`;
+        // На мобильном показываем только номер вопроса
+        let questionText;
+        if (isMobile) {
+            questionText = `Вопрос ${row.questionNum}`;
+        } else {
+            const questionKey = `${row.round}-${row.questionNum}`;
+            questionText = questionsData[questionKey] || row.question || `Вопрос ${row.questionNum}`;
+        }
         
         const $tr = $(`
             <tr class="${isVabankRow ? 'vabank-row' : ''}">
@@ -468,6 +498,7 @@ function updateProgressChart() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            devicePixelRatio: 2,
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -551,6 +582,7 @@ function updateDistributionChart() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            devicePixelRatio: 2,
             plugins: {
                 legend: {
                     display: false
